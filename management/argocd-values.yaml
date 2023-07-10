@@ -1,0 +1,62 @@
+crd:
+
+
+controller:
+  args:
+    # -- define the application controller `--status-processors`
+    statusProcessors: "20"
+    # -- define the application controller `--operation-processors`
+    operationProcessors: "10"
+    # -- define the application controller `--app-hard-resync`
+    appHardResyncPeriod: "0"
+    # -- define the application controller `--app-resync`
+    appResyncPeriod: "20"
+    # -- define the application controller `--self-heal-timeout-seconds`
+    selfHealTimeout: "5"
+    # -- define the application controller `--repo-server-timeout-seconds`
+    repoServerTimeoutSeconds: "60"
+
+server:
+  certificate:
+    enabled: true
+    domain: admin.alleaffengaffen.ch
+    issuer:
+      group: "cert-manager.io"
+      kind: "ClusterIssuer"
+      name: "letsencrypt-production"
+    secretName: argocd-server-tls
+
+  service:
+    type: NodePort
+    externalIPs:
+    - "65.21.253.236"
+
+  config:
+    url: "https://admin.alleaffengaffen.ch"
+    server.rbac.log.enforce.enable: "true"
+    exec.enabled: "true"
+    admin.enabled: "true"
+
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: 26be52c1bdb04a4d6e1f
+            clientSecret: $github:clientSecret
+            orgs:
+            - name: alleaffengaffen
+
+  rbacConfig:
+    policy.csv: |
+      # Grant all members of 'alleaffengaffen:orangutans' admins
+      g, alleaffengaffen:orangutans, role:admin
+    policy.default: role:readonly
+
+  extensions:
+    enabled: false
+
+    contents:
+    - name: argo-rollouts
+      url: https://github.com/argoproj-labs/rollout-extension/releases/download/v0.1.0/extension.tar

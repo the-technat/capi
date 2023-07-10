@@ -1,0 +1,17 @@
+cilium:
+  hubble:
+    enabled: true
+    relay:
+      enabled: true
+    ui:
+      enabled: true
+  rollOutPods: true
+  policyEnforcementMode: "none"
+  rollOutCiliumPods: true
+  priorityClassName: "system-node-critical"
+  annotateK8sNode: true
+  ingressController:
+    enabled: true
+  l7Proxy: false
+  operator:
+    replicas: 1

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: aws-ccm
+  namespace: argocd
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          argocd.argoproj.io/secret-type: cluster # Target all remote clusters (not the management cluster itself)
+          cluster-type: aws
+  template:
+    metadata:
+      name: '{{name}}-aws-ccm'
+    spec:
+      project: addons
+      source:
+        targetRevision: HEAD
+        repoURL: https://github.com/alleaffengaffen/addons.git
+        path: aws-ccm
+        helm:
+          valueFiles:
+          - values.yaml
+      destination:
+        server: '{{server}}'
+        namespace: kube-system
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: false

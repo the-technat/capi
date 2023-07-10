@@ -1,0 +1,60 @@
+cert-manager:
+  global:
+    # Set the verbosity of cert-manager. Range of 0 - 6 with 6 being the most verbose.
+    logLevel: 2
+
+  installCRDs: true
+
+  replicaCount: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 200Mi
+
+  prometheus:
+    enabled: false
+
+  ingressShim:
+    defaultIssuerName: "letsencrypt-staging"
+    defaultIssuerKind: "ClusterIssuer"
+
+  webhook:
+    replicaCount: 2
+
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 50m
+        memory: 100Mi
+
+  cainjector:
+    replicaCount: 2
+
+    strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 0
+        maxUnavailable: 1
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
