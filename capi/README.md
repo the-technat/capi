@@ -1,18 +1,18 @@
-# Cluster-API Management Cluster
+# Cluster-API Management Cluster - capi
 
-Terminology explained [here](https://cluster-api.sigs.k8s.io/reference/glossary#management-cluster).
+[The cluster where one or more Infrastructure Providers run, and where resources (e.g. Machines) are stored. Typically referred to when you are provisioning multiple workload clusters.](https://cluster-api.sigs.k8s.io/reference/glossary#management-cluster).
 
 ## Hardware
 
-Fujitsu Lifebook E714 with i7, 16GB Ram and 128GB OS Disk
+Fujitsu Lifebook E714 with i7, 16GB Ram and 128GB SSD.
 
 ## OS
 
-Installed Ubuntu Server 24.04.01 LTS manually, installed tailscale and joined the tailnet.
+Installed Ubuntu Server 24.04 LTS manually, installed tailscale and joined the tailnet.
 
 Passwordless sudo is enabled.
 
-Lastly to ignore the display and suspending of the laptop, I added the following two lines to `/etc/systemd/logind.conf`:
+To ignore the display and suspending of the laptop, I added the following two lines to `/etc/systemd/logind.conf`:
 
 ```
 HandleLidSwitch=ignore
@@ -25,9 +25,9 @@ A reboot is needed to apply these changes.
 
 ## K3s
 
-Using k3sup this is very easy:
+Using [k3sup](https://github.com/alexellis/k3sup) this is very easy:
 
-```
+```console
 k3sup install \
   --host capi \
   --context capi \
